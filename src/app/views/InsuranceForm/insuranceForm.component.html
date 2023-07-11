@@ -1,0 +1,145 @@
+<section class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col lg:flex-row-reverse">
+    <div class="text-center lg:text-left max-w-lg">
+      <h1 class="text-5xl font-bold">Your Claim starts here</h1>
+      <!-- <p class="py-6 px-1">We will give you a quote</p> -->
+    </div>
+    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+      <div class="card-body">
+        <form [formGroup]="insuranceForm">
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your age?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="ageFormControl" 
+                placeholder="age"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.ageFormControl.hasError('min') && !insuranceForm.controls.ageFormControl.hasError('required')">
+                Your age must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.ageFormControl.hasError('required')">
+                Age is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your driving experience?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="drivingExperienceFormControl" 
+                placeholder="driving experience"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.drivingExperienceFormControl.hasError('min') && !insuranceForm.controls.drivingExperienceFormControl.hasError('required')">
+                Your age must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.ageFormControl.hasError('required')">
+                Age is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your drivingRecord?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="driverRecordFormControl" 
+                placeholder="driving record"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.driverRecordFormControl.hasError('min') && !insuranceForm.controls.driverRecordFormControl.hasError('required')">
+                Your driving record must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.driverRecordFormControl.hasError('required')">
+                driving record is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your claims?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="claimsFormControl" 
+                placeholder="claims"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.claimsFormControl.hasError('min') && !insuranceForm.controls.claimsFormControl.hasError('required')">
+                Your claims must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.claimsFormControl.hasError('required')">
+                claims is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your carValue?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="carValueFormControl" 
+                placeholder="carValue"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.carValueFormControl.hasError('min') && !insuranceForm.controls.carValueFormControl.hasError('required')">
+                Your carValue must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.carValueFormControl.hasError('required')">
+                carValue is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your annualMileage?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="annualMileageFormControl" 
+                placeholder="annualMileage"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error 
+                *ngIf="insuranceForm.controls.annualMileageFormControl.hasError('min') && !insuranceForm.controls.annualMileageFormControl.hasError('required')"
+              >
+                Your annualMileage must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.annualMileageFormControl.hasError('required')">
+                annualMileage is required
+              </mat-error>
+            </mat-form-field>
+          </div>     
+          <div class="form-control">
+            <mat-form-field class="form-question">
+              <mat-label>What is your insurance history?</mat-label>
+              <input 
+                matInput 
+                type="text" 
+                formControlName="insuranceHistoryFormControl" 
+                placeholder="insuranceHistory"
+                [errorStateMatcher]="errorMatcher"
+              >
+              <mat-error *ngIf="insuranceForm.controls.insuranceHistoryFormControl.hasError('min') && !insuranceForm.controls.insuranceHistoryFormControl.hasError('required')">
+                Your insuranceHistory must be greater than 18.
+              </mat-error>
+              <mat-error *ngIf="insuranceForm.controls.insuranceHistoryFormControl.hasError('required')">
+                insuranceHistory is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-control mt-6">
+            <button class="btn btn-primary" type="submit" [disabled]="!insuranceForm.valid">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
