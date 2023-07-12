@@ -15,6 +15,7 @@ import {
 import { AppComponent } from './app.component';
 import { LandingComponent } from './views/Landing/landing.component';
 import { InsuranceFormComponent } from './views/InsuranceForm/insuranceForm.component';
+import { VehicleFormComponent } from './views/VehicleForm/vehicleForm.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -24,14 +25,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
     InsuranceFormComponent,
-    
+    VehicleFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +46,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatListModule,
     MatInputModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}

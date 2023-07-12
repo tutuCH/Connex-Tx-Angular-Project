@@ -1,0 +1,91 @@
+<section class="hero min-h-screen bg-lime-50">
+  <div class="hero-content flex-col lg:flex-row gap-10">
+    <div class="text-center lg:text-left max-w-lg min-w-fit">
+      <h1 class="text-5xl font-bold">Almost there</h1>
+      <p class="py-6 px-1">Please provide some vehicle information</p>
+    </div>  
+    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+      <div class="card-body">
+        <form [formGroup]="vehicleForm">
+          <mat-form-field class="w-full">
+            <mat-label>Vehicle Category</mat-label>
+            <input 
+              type="text"
+              placeholder="Vehicle Category"
+              aria-label="text"
+              matInput
+              formControlName="categoryFormControl" 
+              [matAutocomplete]="categoryAuto"
+            >
+            <mat-autocomplete autoActiveFirstOption #categoryAuto="matAutocomplete">
+              <mat-option *ngFor="let option of categoryFilteredOptions | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Vehicle Brand</mat-label>
+            <input 
+              type="text"
+              placeholder="Vehicle Brand"
+              aria-label="text"
+              matInput
+              formControlName="makeFormControl" 
+              [matAutocomplete]="makeAuto"
+              [errorStateMatcher]="errorMatcher"
+              (blur)="onMakeInput($event.target)"
+            >
+            <mat-autocomplete autoActiveFirstOption #makeAuto="matAutocomplete">
+              <mat-option 
+                *ngFor="let option of makeFilteredOptions | async" 
+                [value]="option"
+                (onSelectionChange)="onOptionSelected(option)"
+            >
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Vehicle Model</mat-label>
+            <input 
+              type="text"
+              placeholder="Vehicle Model"
+              aria-label="text"
+              matInput
+              formControlName="modelFormControl" 
+              [matAutocomplete]="modelAuto"
+              [errorStateMatcher]="errorMatcher"
+            >
+            <mat-autocomplete autoActiveFirstOption #modelAuto="matAutocomplete">
+              <mat-option 
+                *ngFor="let option of modelFilteredOptions | async" 
+                [value]="option"
+              >
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Year</mat-label>
+            <input 
+              type="text"
+              placeholder="Year"
+              aria-label="text"
+              matInput
+              formControlName="yearFormControl"
+              [errorStateMatcher]="errorMatcher"
+            >
+          </mat-form-field>       
+          <button 
+            class="btn btn-primary w-full" 
+            type="submit" 
+            [disabled]="!vehicleForm.valid" 
+            onclick="handleInsuranceFormSubmit()"
+          >
+            Submit
+          </button>
+        </form>    
+      </div>
+    </div>  
+  </div>
+</section>

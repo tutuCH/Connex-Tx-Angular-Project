@@ -1,5 +1,5 @@
-<section class="hero min-h-screen bg-base-200">
-  <div class="hero-content flex-col lg:flex-row-reverse">
+<section class="hero min-h-screen bg-amber-50">
+  <div class="hero-content flex-col lg:flex-row-reverse gap-10">
     <div class="text-center lg:text-left max-w-lg">
       <h1 class="text-5xl font-bold">Your Claim starts here</h1>
       <!-- <p class="py-6 px-1">We will give you a quote</p> -->
@@ -12,7 +12,7 @@
               <mat-label>What is your age?</mat-label>
               <input 
                 matInput 
-                type="text" 
+                type="number" 
                 formControlName="ageFormControl" 
                 placeholder="age"
                 [errorStateMatcher]="errorMatcher"
@@ -30,7 +30,7 @@
               <mat-label>What is your driving experience?</mat-label>
               <input 
                 matInput 
-                type="text" 
+                type="number" 
                 formControlName="drivingExperienceFormControl" 
                 placeholder="driving experience"
                 [errorStateMatcher]="errorMatcher"
@@ -71,7 +71,10 @@
                 placeholder="claims"
                 [errorStateMatcher]="errorMatcher"
               >
-              <mat-error *ngIf="insuranceForm.controls.claimsFormControl.hasError('min') && !insuranceForm.controls.claimsFormControl.hasError('required')">
+              <mat-error 
+                *ngIf="insuranceForm.controls.claimsFormControl.hasError('min') && !insuranceForm.controls.claimsFormControl.hasError('required')"
+                [ngClass]="'mat-error-element'"
+              >
                 Your claims must be greater than 18.
               </mat-error>
               <mat-error *ngIf="insuranceForm.controls.claimsFormControl.hasError('required')">
@@ -136,7 +139,14 @@
             </mat-form-field>
           </div>
           <div class="form-control mt-6">
-            <button class="btn btn-primary" type="submit" [disabled]="!insuranceForm.valid">Continue</button>
+            <button 
+              class="btn btn-primary" 
+              type="submit" 
+              [disabled]="!insuranceForm.valid" 
+              onclick="handleInsuranceFormSubmit()"
+            >
+              Continue
+            </button>
           </div>
         </form>
       </div>

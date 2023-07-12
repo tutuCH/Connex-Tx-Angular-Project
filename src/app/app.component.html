@@ -7,7 +7,10 @@
   </head>
   <section>
   </section>
-  <landing></landing>
-  <insuranceForm></insuranceForm>
+  <landing/>
+  <insuranceForm
+    (insuranceFormChange)="handleInsuranceFormChange($event)"
+  ></insuranceForm>
+  <vehicleForm/>
 </html>
 <router-outlet></router-outlet>
