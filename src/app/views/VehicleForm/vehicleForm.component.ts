@@ -2,8 +2,8 @@ import { Component, EventEmitter, Output, } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../utils/ErrorMatcher/errorMatcher.component'
 import { Observable, map, startWith } from 'rxjs';
-import { Vehicle } from '../../data/dataTypes'
-
+import { FormDataKey, InsuranceForm, Vehicle } from '../../data/dataTypes'
+import { FormDataService } from 'src/app/utils/FormDataServices/formDataServices';
 import { ApiService } from 'src/app/utils/ApiServices/apiServices';
 import { API_URL } from 'src/app/data/apiLists';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import axios from 'axios';
 
 export class VehicleFormComponent {
   @Output() vehicleFormChange = new EventEmitter<Vehicle>();
-  // vehiclesApiUrl = 'https://storage.googleapis.com/connex-th/insurance_assignment/car_model.json'
+
   vehicleForm = new FormGroup({
     categoryFormControl: new FormControl('', [Validators.required]),
     makeFormControl: new FormControl('', [Validators.required]),
@@ -39,21 +39,28 @@ export class VehicleFormComponent {
       // handleApiFailError()
     });
   }
-  constructor() { }
+  constructor(private formDataService: FormDataService) { }
+
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]> | undefined;
   categoryFilteredOptions: Observable<string[]> | undefined;
   makeFilteredOptions: Observable<string[]> | undefined;
   modelFilteredOptions: Observable<string[]> | undefined;
+  yearFilteredOptions: Observable<string[]> | undefined;
 
   async ngOnInit() {
     await this.getVehiclesFromUrl();
     this.setAllFilteredOption()
   }
 
-  private _filter(value: string, options: string[]): string[] {
+  private _filter(value: string, options: Array<string | number>): string[] {
     const filterValue = value.toLowerCase();
-    return options.filter(option => option.toLowerCase().includes(filterValue));
+    return options.filter((option: string | number) => {
+      if (typeof option === 'number') {
+        return option.toString().toLowerCase().includes(filterValue);
+      }
+      return option.toLowerCase().includes(filterValue);
+    }).map(option => option.toString());
   }
 
   private getVehiclesCategory(vehicles: Vehicle[]) {
@@ -65,16 +72,21 @@ export class VehicleFormComponent {
     return [...new Set(vehicles.map(item => item.Make))];
   }  
 
+  private getModelCategory(vehicles: Vehicle[]) {
+    return [...new Set(vehicles.map(item => item.Model))];
+  }  
+
   private setAllFilteredOption() {
     this.setCategoryFilteredOptions();
     this.setMakeFilteredOptions();
+    this.setModelFilteredOptions();
   }
 
   private setCategoryFilteredOptions() {
     const options = this.getVehiclesCategory(this.vehicles);
     this.categoryFilteredOptions = this.vehicleForm.controls['categoryFormControl'].valueChanges.pipe(
       startWith(''),
-      map((value: any) => this._filter(value || '', options as string[])),
+      map((value) => this._filter(value || '', options as string[])),
     );
   }
   
@@ -82,23 +94,45 @@ export class VehicleFormComponent {
     const options = this.getMakeCategory(this.vehicles);
     this.makeFilteredOptions = this.vehicleForm.controls['makeFormControl'].valueChanges.pipe(
       startWith(''),
-      map((value: any) => this._filter(value || '', options as string[])),
+      map((value) => this._filter(value || '', options as string[])),
     );
   }
 
+  private setModelFilteredOptions() {
+    const options = this.getModelCategory(this.vehicles);
+    this.modelFilteredOptions = this.vehicleForm.controls['modelFormControl'].valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value || '', options as string[])),
+    );
+  }  
+
   onMakeInput(event: any) {
-    this.onOptionSelected(event.value)
+    this.onMakeSelected(event.value)
   }
 
-  onOptionSelected(option: string){
+  onMakeSelected(option: string){
     if (this.makeFilteredOptions?.pipe(map(arr => arr.includes(option)))){
       const options = this.getModelsByMake(this.vehicles, option)
       this.modelFilteredOptions = this.vehicleForm.controls['modelFormControl'].valueChanges.pipe(
         startWith(''),
-        map((value: any) => this._filter(value || '', options)),
+        map((value) => this._filter(value || '', options)),
       );      
     }
   }
+
+  onModelInput(event: any) {
+    this.onModelSelected(event.value);
+  }
+
+  onModelSelected(option: string){
+    if (this.modelFilteredOptions?.pipe(map(arr => arr.includes(option)))){
+      const options = this.getYearByMakeAndModel(this.vehicles ,option)
+      this.yearFilteredOptions = this.vehicleForm.controls['yearFormControl'].valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || '', options)),
+      );      
+    }
+  }  
 
   getModelsByMake(cars: Vehicle[], make: string): string[] {
     return cars
@@ -106,13 +140,34 @@ export class VehicleFormComponent {
       .map(car => car.Model) as string[];
   }
 
+  getYearByMakeAndModel(cars: Vehicle[], model: string): number[] {
+    return cars
+      .filter(car => car.Make === this.vehicleForm.controls['makeFormControl'].value && car.Model === model)
+      .map(car => car.Year)
+      .sort() as number[];
+  }  
+
   handleInsuranceFormSubmit = () => {
-    const vehicleInput: Vehicle = {
-      Category: this.vehicleForm.controls.categoryFormControl.value,
-      Make: this.vehicleForm.controls.makeFormControl.value,
-      Model: this.vehicleForm.controls.modelFormControl.value,
-      Year: parseInt(this.vehicleForm.controls.yearFormControl.value as string),
+    this.formDataService.saveFormData('vehicleForm', this.vehicleForm);
+    const insuranceForm = this.formDataService.getFormData(FormDataKey.INSURANCE_FORM)
+    this.apiService.postApiCall(
+      `http://localhost:8080/${API_URL.GET_PREMIUM_AND_QUOTE_REF}`, 
+      this.getRequestBodyByFormData(insuranceForm)
+    ) .subscribe(response => {
+      console.log(response);
+    });    
+  }  
+
+  getRequestBodyByFormData = (insuranceForm: any) => {
+    const requestBody: InsuranceForm = {
+      age: insuranceForm.controls.ageFormControl.value,
+      drivingExperience: insuranceForm.controls.drivingExperienceFormControl.value,
+      driverRecord: insuranceForm.controls.driverRecordFormControl.value,
+      claims: insuranceForm.controls.claimsFormControl.value,
+      carValue: insuranceForm.controls.carValueFormControl.value,
+      annualMileage: insuranceForm.controls.annualMileageFormControl.value,
+      insuranceHistory: insuranceForm.controls.insuranceHistoryFormControl.value,
     }
-    this.vehicleFormChange.emit(vehicleInput);
+    return requestBody;
   }
 }

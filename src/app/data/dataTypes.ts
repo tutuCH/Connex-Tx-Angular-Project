@@ -14,3 +14,9 @@ export interface InsuranceForm {
   annualMileage?: number | null;
   insuranceHistory?: number | null;
 }
+
+export enum FormDataKey {
+  INSURANCE_FORM = 'insuranceForm',
+  VEHICLE_FORM = 'vehicleForm'
+}
+

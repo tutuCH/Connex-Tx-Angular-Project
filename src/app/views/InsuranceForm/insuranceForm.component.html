@@ -138,10 +138,20 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="form-control mt-6">
+          <div class="flex mt-6 gap-x-10 justify-between">
             <button 
-              class="btn btn-primary" 
-              type="submit" 
+              class="btn btn-neutral flex-grow rounded-full max-w-[10rem]" 
+              type="button" 
+              routerLink="" 
+              routerLinkActive="active" 
+              ariaCurrentWhenActive="page"
+            >
+              Back
+            </button>
+              
+            <button 
+              class="btn btn-primary rounded-full flex-grow max-w-[10rem]" 
+              type="button" 
               [disabled]="!insuranceForm.valid" 
               (click)="handleInsuranceFormSubmit()"
             >

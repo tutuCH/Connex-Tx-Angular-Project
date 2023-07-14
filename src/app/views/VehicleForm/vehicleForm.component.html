@@ -34,13 +34,13 @@
               [matAutocomplete]="makeAuto"
               [errorStateMatcher]="errorMatcher"
               (blur)="onMakeInput($event.target)"
-            >
+              >
             <mat-autocomplete autoActiveFirstOption #makeAuto="matAutocomplete">
               <mat-option 
                 *ngFor="let option of makeFilteredOptions | async" 
                 [value]="option"
-                (onSelectionChange)="onOptionSelected(option)"
-            >
+                (onSelectionChange)="onMakeSelected(option)"
+                >
                 {{option}}
               </mat-option>
             </mat-autocomplete>
@@ -55,11 +55,13 @@
               formControlName="modelFormControl" 
               [matAutocomplete]="modelAuto"
               [errorStateMatcher]="errorMatcher"
+              (blur)="onModelInput($event.target)"
             >
             <mat-autocomplete autoActiveFirstOption #modelAuto="matAutocomplete">
               <mat-option 
                 *ngFor="let option of modelFilteredOptions | async" 
                 [value]="option"
+                (onSelectionChange)="onModelSelected(option)"
               >
                 {{option}}
               </mat-option>
@@ -68,22 +70,45 @@
           <mat-form-field class="w-full">
             <mat-label>Year</mat-label>
             <input 
-              type="number"
+              type="text"
               placeholder="Year"
               aria-label="text"
               matInput
-              formControlName="yearFormControl"
+              formControlName="yearFormControl" 
+              [matAutocomplete]="yearAuto"
               [errorStateMatcher]="errorMatcher"
             >
-          </mat-form-field>       
-          <button 
-            class="btn btn-primary w-full" 
-            type="submit" 
-            [disabled]="!vehicleForm.valid" 
-            (click)="handleInsuranceFormSubmit()"
-          >
-            Submit
-          </button>
+            <mat-autocomplete autoActiveFirstOption #yearAuto="matAutocomplete">
+              <mat-option 
+                *ngFor="let option of yearFilteredOptions | async" 
+                [value]="option"
+              >
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>    
+
+
+          <div class="flex mt-6 gap-x-10 justify-between">
+            <button 
+              class="btn btn-neutral flex-grow rounded-full max-w-[10rem]" 
+              type="button" 
+              routerLink="/insurance-form" 
+              routerLinkActive="active" 
+              ariaCurrentWhenActive="page"
+            >
+              Back
+            </button>
+              
+            <button 
+              class="btn btn-primary flex-grow rounded-full max-w-[10rem]" 
+              type="submit" 
+              [disabled]="!vehicleForm.valid" 
+              (click)="handleInsuranceFormSubmit()"
+            >
+              Submit
+            </button>
+          </div>          
         </form>    
       </div>
     </div>  
