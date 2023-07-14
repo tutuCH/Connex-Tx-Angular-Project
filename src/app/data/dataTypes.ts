@@ -1,8 +1,8 @@
-export interface Car {
-  Category: string;
-  Make: string;
-  Model: string;
-  Year: number;
+export interface Vehicle {
+  Category?: string | null;
+  Make?: string | null;
+  Model?: string | null;
+  Year?: number | null;
 }
 
 export interface InsuranceForm {

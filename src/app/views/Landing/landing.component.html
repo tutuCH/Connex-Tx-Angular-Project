@@ -7,4 +7,15 @@
         <button class="btn btn-primary">Get Started</button>
       </div>
     </div>
-</section>
+  </section>
+  <insuranceForm
+    (insuranceFormChange)="handleInsuranceFormChange($event)"
+  ></insuranceForm>
+  <!-- <vehicleForm
+    *ngIf="isInsuranceFormCompleted"
+    (vehicleFormChange)="handleVehicleFormChange($event)"
+  ></vehicleForm> -->
+
+  <vehicleForm
+    (vehicleFormChange)="handleVehicleFormChange($event)"
+  ></vehicleForm>  
