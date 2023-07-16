@@ -28,7 +28,8 @@ export class ApiService {
 
   postApiCall(apiUrl: string, body: any): Observable<any> {
     const headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': environment.API_URL
     };
     const url = `${this.domain}${apiUrl}`;
     return new Observable(observer => {
