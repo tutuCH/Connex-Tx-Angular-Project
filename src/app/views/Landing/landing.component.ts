@@ -1,5 +1,4 @@
 import { Component, } from '@angular/core';
-import { InsuranceFormComponent } from '../InsuranceForm/insuranceForm.component';
 import { Router } from '@angular/router';
 @Component({
   selector: 'landing',

@@ -2,11 +2,13 @@ import { Component, EventEmitter, Output, } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../utils/ErrorMatcher/errorMatcher.component'
 import { Observable, map, startWith } from 'rxjs';
-import { FormDataKey, InsuranceForm, Vehicle } from '../../data/dataTypes'
+import { FormDataKey, InsuranceForm, PremiumRequestBody, Vehicle } from '../../data/dataTypes'
 import { FormDataService } from 'src/app/utils/FormDataServices/formDataServices';
 import { ApiService } from 'src/app/utils/ApiServices/apiServices';
 import { API_URL } from 'src/app/data/apiLists';
 import axios from 'axios';
+import { Router } from '@angular/router';
+// import { environment } from 'environment';
 
 @Component({
   selector: 'vehicleForm',
@@ -17,12 +19,6 @@ import axios from 'axios';
 export class VehicleFormComponent {
   @Output() vehicleFormChange = new EventEmitter<Vehicle>();
 
-  vehicleForm = new FormGroup({
-    categoryFormControl: new FormControl('', [Validators.required]),
-    makeFormControl: new FormControl('', [Validators.required]),
-    modelFormControl: new FormControl('', [Validators.required]),
-    yearFormControl: new FormControl('', [Validators.required]),
-  });
   vehicles = [] as Array<Vehicle>
 
   errorMatcher = new MyErrorStateMatcher();
@@ -39,7 +35,7 @@ export class VehicleFormComponent {
       // handleApiFailError()
     });
   }
-  constructor(private formDataService: FormDataService) { }
+  constructor(private formDataService: FormDataService, private router: Router) { }
 
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]> | undefined;
@@ -50,8 +46,19 @@ export class VehicleFormComponent {
 
   async ngOnInit() {
     await this.getVehiclesFromUrl();
-    this.setAllFilteredOption()
+    const completedVehicleForm = this.formDataService.getFormData(FormDataKey.VEHICLE_FORM);
+    if (completedVehicleForm) {
+      this.vehicleForm.setValue(completedVehicleForm.value);
+    }    
+    this.setAllFilteredOption();
   }
+
+  vehicleForm = new FormGroup({
+    categoryFormControl: new FormControl('', [Validators.required]),
+    makeFormControl: new FormControl('', [Validators.required]),
+    modelFormControl: new FormControl('', [Validators.required]),
+    yearFormControl: new FormControl('', [Validators.required]),
+  });
 
   private _filter(value: string, options: Array<string | number>): string[] {
     const filterValue = value.toLowerCase();
@@ -151,15 +158,33 @@ export class VehicleFormComponent {
     this.formDataService.saveFormData('vehicleForm', this.vehicleForm);
     const insuranceForm = this.formDataService.getFormData(FormDataKey.INSURANCE_FORM)
     this.apiService.postApiCall(
-      `http://localhost:8080/${API_URL.GET_PREMIUM_AND_QUOTE_REF}`, 
+      API_URL.GET_PREMIUM_AND_QUOTE_REF, 
       this.getRequestBodyByFormData(insuranceForm)
     ) .subscribe(response => {
-      console.log(response);
-    });    
+      try{
+        if (response?.status !== 'fail') {
+          this.router.navigate(['/quotation'], { queryParams: { monthlyQuote: response.premium, quoteReference: response.quote_reference } });
+        } else {
+          window.alert('Website is under maintainance, please try again later');
+        }
+      } catch (error) {
+        console.warn(error)
+      }
+    });
   }  
 
+  getCarAgeByManufacturingYear = (manufacturingYear: string | null) => {
+    if (manufacturingYear) {
+      const currentYear = new Date().getFullYear();
+      const yearsSince = currentYear - Number(manufacturingYear);
+      return yearsSince;
+    } else {
+      return 0
+    }
+  }
+
   getRequestBodyByFormData = (insuranceForm: any) => {
-    const requestBody: InsuranceForm = {
+    const requestBody: PremiumRequestBody = {
       age: insuranceForm.controls.ageFormControl.value,
       drivingExperience: insuranceForm.controls.drivingExperienceFormControl.value,
       driverRecord: insuranceForm.controls.driverRecordFormControl.value,
@@ -167,7 +192,13 @@ export class VehicleFormComponent {
       carValue: insuranceForm.controls.carValueFormControl.value,
       annualMileage: insuranceForm.controls.annualMileageFormControl.value,
       insuranceHistory: insuranceForm.controls.insuranceHistoryFormControl.value,
+      carAge: this.getCarAgeByManufacturingYear(this.vehicleForm.controls.yearFormControl.value),
     }
     return requestBody;
+  }
+
+  handleBack = () => {
+    this.formDataService.saveFormData(FormDataKey.VEHICLE_FORM, this.vehicleForm);
+    this.router.navigate(['/insurance-form']);
   }
 }

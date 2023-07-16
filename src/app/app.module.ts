@@ -3,19 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ReactiveFormsModule,} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './views/Landing/landing.component';
 import { InsuranceFormComponent } from './views/InsuranceForm/insuranceForm.component';
 import { VehicleFormComponent } from './views/VehicleForm/vehicleForm.component';
+import { QuotationComponent } from './views/Quotation/quotation.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -33,6 +27,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     LandingComponent,
     InsuranceFormComponent,
     VehicleFormComponent,
+    QuotationComponent,
   ],
   imports: [
     BrowserModule,

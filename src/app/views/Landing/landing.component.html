@@ -2,21 +2,14 @@
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center text-neutral-content">
     <div class="max-w-md">
-      <h1 class="mb-5 text-5xl font-bold">Welcome!</h1>
+        <div class="mb-5 text-5xl font-bold animate-fade-up animate-once animate-ease-in">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-200 to-violet-300">Welcome!</span>
+        </div>
       <p class="mb-5">We are here to provide vehicle insurance quotes</p>
-      <button class="btn btn-primary" (click)="handleLandingClick()">Get Started</button>
+      <button class="btn btn-ghost animate-bounce" (click)="handleLandingClick()">
+        <mat-icon>expand_more</mat-icon>
+      </button>
     </div>
   </div>
 </section>
-  <!-- <insuranceForm
-    (insuranceFormChange)="handleInsuranceFormChange($event)"
-  ></insuranceForm>
-  <vehicleForm
-    *ngIf="isInsuranceFormCompleted"
-    (vehicleFormChange)="handleVehicleFormChange($event)"
-  ></vehicleForm> -->
-<!-- 
-  <vehicleForm
-    (vehicleFormChange)="handleVehicleFormChange($event)"
-  ></vehicleForm>   -->
 

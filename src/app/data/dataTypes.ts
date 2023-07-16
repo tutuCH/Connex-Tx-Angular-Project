@@ -15,6 +15,10 @@ export interface InsuranceForm {
   insuranceHistory?: number | null;
 }
 
+export interface PremiumRequestBody extends InsuranceForm {
+  carAge?: number;
+}
+
 export enum FormDataKey {
   INSURANCE_FORM = 'insuranceForm',
   VEHICLE_FORM = 'vehicleForm'

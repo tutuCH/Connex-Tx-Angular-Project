@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosResponse } from 'axios';
+import { environment } from 'src/environment/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,14 +11,15 @@ export class ApiService {
   constructor() { }
 
   makeApiCall(apiUrl: string): Observable<any> {
+    const url = `${environment.API_URL}${apiUrl}`;
     return new Observable(observer => {
-      axios.get(apiUrl)
+      axios.get(url)
         .then((response: AxiosResponse) => {
           observer.next(response.data);
           observer.complete();
         })
         .catch(error => {
-          observer.error(error);
+          observer.error(`Error: ${error.message}`);
         });
     });
   }
@@ -26,15 +28,16 @@ export class ApiService {
     const headers = {
       'Content-Type': 'application/json'
     };
-
+    const url = `${environment.API_URL}${apiUrl}`;
     return new Observable(observer => {
-      axios.post(apiUrl, body, { headers })
+      axios.post(url, body, { headers })
         .then((response: AxiosResponse) => {
           observer.next(response.data);
           observer.complete();
         })
         .catch(error => {
-          observer.error(error);
+          observer.next({status: 'fail', message: error});
+          observer.complete();
         });
     });
   }

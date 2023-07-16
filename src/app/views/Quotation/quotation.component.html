@@ -1,0 +1,18 @@
+<section class="hero min-h-screen" style="background-image: url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg);">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center text-neutral-content">
+    <div class="max-w-md">
+        <div class="mb-5 text-3xl font-bold animate-fade-up animate-once animate-ease-in">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-200 to-violet-300">
+              Your Monthly Quote is <br/>${{monthlyQuote}},<br/> and Your Yearly Quote is <br/>${{monthlyQuote && monthlyQuote * 12}}
+          </span>
+        </div>
+      <p class="mb-5">#{{quoteReference}}</p>
+      <button class="btn btn-neutral" routerLink="/" >
+        Back to home
+        <mat-icon>keyboard_return</mat-icon>
+      </button>           
+    </div>
+  </div>
+</section>
+

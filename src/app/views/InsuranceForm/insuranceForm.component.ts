@@ -5,6 +5,7 @@ import { MyErrorStateMatcher } from '../../utils/ErrorMatcher/errorMatcher.compo
 import { Router } from '@angular/router';
 import { FormDataService } from 'src/app/utils/FormDataServices/formDataServices';
 import { FormDataKey } from 'src/app/data/dataTypes';
+
 // Define the component
 @Component({
   selector: 'insuranceForm',
@@ -29,8 +30,10 @@ export class InsuranceFormComponent {
   // ]
   constructor(private router: Router, private formDataService: FormDataService) { }
   ngOnInit() { 
-    this.formDataService.getFormData(FormDataKey.INSURANCE_FORM)
-
+    const completedInsuranceForm = this.formDataService.getFormData(FormDataKey.INSURANCE_FORM);
+    if (completedInsuranceForm && completedInsuranceForm.status === "VALID") {
+      this.insuranceForm.setValue(completedInsuranceForm.value);
+    }
   }
 
   // Define the form group with its form controls and validators
@@ -43,6 +46,7 @@ export class InsuranceFormComponent {
     annualMileageFormControl: new FormControl(null, [Validators.required, Validators.min(0)]),
     insuranceHistoryFormControl: new FormControl(null, [Validators.required, Validators.min(0)]),
   });
+
 
   // Define an error matcher to use with the form controls
   errorMatcher = new MyErrorStateMatcher();
