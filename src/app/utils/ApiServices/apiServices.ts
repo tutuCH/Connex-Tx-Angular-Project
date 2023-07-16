@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosResponse } from 'axios';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  private domain: string | undefined;
 
-  constructor() { }
-
+  constructor() { 
+    this.domain = environment.API_URL;
+  }
   makeApiCall(apiUrl: string): Observable<any> {
-    const url = `${environment.API_URL}${apiUrl}`;
+    const url = `${this.domain}${apiUrl}`;
     return new Observable(observer => {
       axios.get(url)
         .then((response: AxiosResponse) => {
@@ -28,7 +30,7 @@ export class ApiService {
     const headers = {
       'Content-Type': 'application/json'
     };
-    const url = `${environment.API_URL}${apiUrl}`;
+    const url = `${this.domain}${apiUrl}`;
     return new Observable(observer => {
       axios.post(url, body, { headers })
         .then((response: AxiosResponse) => {

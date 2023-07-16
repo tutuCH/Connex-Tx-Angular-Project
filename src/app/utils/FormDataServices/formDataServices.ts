@@ -35,4 +35,11 @@ export class FormDataService {
     this.formData[formId] = {};
   }
 
+  // Method to clear all data
+  clearAllFormData(): void {
+    for (let formId in this.formData) {
+      this.formData[formId] = {};
+    }
+  }
+
 }

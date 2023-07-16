@@ -1,6 +1,7 @@
 import { Component, } from '@angular/core';
 import { InsuranceFormComponent } from '../InsuranceForm/insuranceForm.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormDataService } from 'src/app/utils/FormDataServices/formDataServices';
 @Component({
   selector: 'quotation',
   templateUrl: './quotation.component.html',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class QuotationComponent {
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private formDataService: FormDataService, private router: Router) { }
   ngOnInit() { 
     this.route.queryParams.subscribe(params => {
       this.monthlyQuote = params['monthlyQuote'];
@@ -18,4 +19,8 @@ export class QuotationComponent {
   monthlyQuote = null;
   quoteReference = null;
 
+  handleBackToLanding() {
+    this.formDataService.clearAllFormData();
+    this.router.navigate(['/']);    
+  }
 }
