@@ -33,7 +33,7 @@ export class ApiService {
     };
     const url = `${this.domain}${apiUrl}`;
     return new Observable(observer => {
-      axios.post(url, body, { headers })
+      axios.post(url, body, { headers, withCredentials: true })
         .then((response: AxiosResponse) => {
           observer.next(response.data);
           observer.complete();
