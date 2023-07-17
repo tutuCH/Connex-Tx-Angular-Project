@@ -11,7 +11,6 @@ export class LandingComponent {
   ngOnInit() { }
   
   handleLandingClick() {
-    // navigate to /insurace-form
     this.router.navigate(['/insurance-form']);
   }
 
