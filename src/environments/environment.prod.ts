@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    API_URL: 'http://44.208.180.210/api'
+    API_URL: 'https://go28bovtp7.execute-api.us-east-1.amazonaws.com/default/connextx-java'
 };
