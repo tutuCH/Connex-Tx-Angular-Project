@@ -5,7 +5,7 @@ import { MyErrorStateMatcher } from '../../utils/ErrorMatcher/errorMatcher.compo
 import { Router } from '@angular/router';
 import { FormDataService } from 'src/app/utils/FormDataServices/formDataServices';
 import { FormDataKey } from 'src/app/data/dataTypes';
-
+import { InsuranceFormQuestionList } from '../../data/data'
 // Define the component
 @Component({
   selector: 'insuranceForm',
@@ -14,20 +14,6 @@ import { FormDataKey } from 'src/app/data/dataTypes';
 })
 export class InsuranceFormComponent {
   // Define an array of objects that contains information about each form control (currently commented out)
-  // insuranceFormQuestionList = [
-  //   {
-  //     formControlName: "ageFormControl",
-  //     label: "What is your age?",
-  //     placeholder: "age",
-  //     validation: ["min-0", "required"]
-  //   },
-  //   {
-  //     formControlName: "drivingExperienceFormControl",
-  //     label: "What is your driving experience?",
-  //     placeholder: "driving experience",
-  //     validation: ["min-0", "required"]
-  //   }    
-  // ]
   constructor(private router: Router, private formDataService: FormDataService) { }
   ngOnInit() { 
     const completedInsuranceForm = this.formDataService.getFormData(FormDataKey.INSURANCE_FORM);
@@ -35,8 +21,7 @@ export class InsuranceFormComponent {
       this.insuranceForm.setValue(completedInsuranceForm.value);
     }
   }
-
-  // Define the form group with its form controls and validators
+  insuranceFormQuestionList = InsuranceFormQuestionList;
   insuranceForm = new FormGroup({
     ageFormControl: new FormControl(null, [Validators.required, Validators.min(18)]),
     drivingExperienceFormControl: new FormControl(null, [Validators.required, Validators.min(0)]),
