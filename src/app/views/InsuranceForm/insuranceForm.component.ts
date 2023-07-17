@@ -24,7 +24,7 @@ export class InsuranceFormComponent {
 
   // Define the form group with its form controls and validators
   insuranceForm = new FormGroup({
-    ageFormControl: new FormControl(null, [Validators.required, Validators.min(18), Validators.pattern(/^[0-9]*$/)]),
+    ageFormControl: new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]*$/)]),
     drivingExperienceFormControl: new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]*$/)]),
     driverRecordFormControl: new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]*$/)]),
     claimsFormControl: new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]*$/)]),

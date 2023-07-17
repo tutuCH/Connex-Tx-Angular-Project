@@ -27,13 +27,9 @@ export class ApiService {
   }
 
   postApiCall(apiUrl: string, body: any): Observable<any> {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': environment.API_URL
-    };
     const url = `${this.domain}${apiUrl}`;
     return new Observable(observer => {
-      axios.post(url, body, { headers, withCredentials: true })
+      axios.post(url, body)
         .then((response: AxiosResponse) => {
           observer.next(response.data);
           observer.complete();
